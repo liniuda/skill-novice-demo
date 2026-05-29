@@ -6,7 +6,7 @@ import { renderMcp }         from './modules/mcp.js';
 import { renderOps }         from './modules/ops.js';
 import { renderSkillDetail } from './modules/skill-detail.js';
 import { renderMarketSub }   from './modules/market.js';
-import { renderPersona }     from './modules/persona.js?v=4';
+import { renderPersona }     from './modules/persona.js?v=6';
 import { showModal, closeModal } from './modal.js';
 
 /* ── 全局模式：work | market ── */

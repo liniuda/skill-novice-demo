@@ -20,7 +20,7 @@ import {
   RISK_LEVELS, MODEL_OPTIONS,
   getAllPersonas, getPersona, updatePersonaSection, resetPersona,
   renderSystemPrompt, renderYaml,
-} from '../data/persona.js?v=4';
+} from '../data/persona.js?v=6';
 import { getSkills } from '../data/skills.js';
 import { showToast, escHtml } from '../utils.js';
 import { showModal, closeModal } from '../modal.js';
