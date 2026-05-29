@@ -20,7 +20,7 @@ import {
   RISK_LEVELS, MODEL_OPTIONS,
   getAllPersonas, getPersona, updatePersonaSection, resetPersona,
   renderSystemPrompt, renderYaml,
-} from '../data/persona.js?v=6';
+} from '../data/persona.js?v=7';
 import { getSkills } from '../data/skills.js';
 import { showToast, escHtml } from '../utils.js';
 import { showModal, closeModal } from '../modal.js';
@@ -50,15 +50,16 @@ export function renderPersona() {
       </div>
     </div>
 
-    <nav class="persona-section-tabs">
-      ${SECTIONS.map(s => `
-        <button class="persona-section-tab${s.id === _section ? ' active' : ''}" data-section="${s.id}" title="${escHtml(s.desc)}">
-          ${escHtml(s.label)}
-        </button>
-      `).join('')}
-    </nav>
+    <div class="persona-layout">
+      <nav class="persona-side-nav" aria-label="拟人化板块导航">
+        ${SECTIONS.map(s => `
+          <button class="persona-side-item${s.id === _section ? ' active' : ''}" data-section="${s.id}" title="${escHtml(s.desc)}">
+            <span class="persona-side-label">${escHtml(s.label)}</span>
+            <span class="persona-side-desc">${escHtml(s.desc)}</span>
+          </button>
+        `).join('')}
+      </nav>
 
-    <div class="persona-body">
       <section class="persona-content" id="personaContent">
         ${renderSection(_section, persona)}
       </section>
@@ -70,7 +71,7 @@ export function renderPersona() {
 
 /* ── 顶层事件绑定 ── */
 function bindEvents(el) {
-  el.querySelectorAll('.persona-section-tab').forEach(btn => {
+  el.querySelectorAll('.persona-side-item').forEach(btn => {
     btn.addEventListener('click', () => {
       _section = btn.dataset.section;
       renderPersona();

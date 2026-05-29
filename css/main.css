@@ -2280,43 +2280,67 @@ body.sidebar-collapsed .collapse-label { opacity: 0; pointer-events: none; }
    拟人化中心 Persona Studio
    ========================================================= */
 
-/* 顶部板块横向 Tab 栏 */
-.persona-section-tabs {
-  display: flex;
-  gap: var(--s-1);
-  padding: 0 var(--s-8);
-  margin-top: var(--s-2);
-  border-bottom: 1px solid var(--border-light);
-  overflow-x: auto;
-  flex-wrap: nowrap;
-  scrollbar-width: none;
+/* 主布局：左侧二级导航 + 右侧内容（两栏） */
+.persona-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--s-6);
+  padding: var(--s-5) var(--s-8) var(--s-8);
+  align-items: start;
 }
-.persona-section-tabs::-webkit-scrollbar { display: none; }
 
-.persona-section-tab {
-  padding: var(--s-3) var(--s-4);
+/* 左侧二级导航 */
+.persona-side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  position: sticky;
+  top: var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-md);
+  padding: var(--s-2);
+}
+
+.persona-side-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--s-2) var(--s-3);
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--text-secondary);
+  border-radius: var(--r-sm);
+  text-align: left;
   cursor: pointer;
   transition: all var(--t);
-  white-space: nowrap;
-  margin-bottom: -1px;
+  color: var(--text-secondary);
+  width: 100%;
 }
-.persona-section-tab:hover { color: var(--accent); }
-.persona-section-tab.active {
+.persona-side-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+.persona-side-item.active {
+  background: var(--accent-soft, rgba(255, 106, 0, 0.08));
   color: var(--accent);
-  border-bottom-color: var(--accent);
-  font-weight: 600;
 }
 
-/* 主体：纯右侧单栏表单 */
-.persona-body {
-  padding: var(--s-5) var(--s-8) var(--s-8);
+.persona-side-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.3;
 }
+.persona-side-desc {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.persona-side-item.active .persona-side-desc { color: var(--accent); opacity: 0.8; }
 
 /* 右侧内容区 */
 .persona-content {
@@ -2563,9 +2587,23 @@ body.sidebar-collapsed .collapse-label { opacity: 0; pointer-events: none; }
   font-size: var(--font-size-sm);
 }
 
-/* 响应式：窄屏 */
+/* 响应式：窄屏折叠为上下结构 */
 @media (max-width: 900px) {
-  .persona-section-tabs { padding: 0 var(--s-5); }
-  .persona-body { padding: var(--s-4) var(--s-5) var(--s-5); }
+  .persona-layout {
+    grid-template-columns: 1fr;
+    padding: var(--s-4) var(--s-5) var(--s-5);
+  }
+  .persona-side-nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .persona-side-nav::-webkit-scrollbar { display: none; }
+  .persona-side-item {
+    flex: 0 0 auto;
+    min-width: 130px;
+  }
+  .persona-side-desc { display: none; }
 }
 
