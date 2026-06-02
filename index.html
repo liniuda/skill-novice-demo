@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>智服工坊 X · 前沿 GUI 进化版</title>
+  <link rel="stylesheet" href="css/main.css?v=x1">
+  <link rel="stylesheet" href="css/x-theme.css?v=x1">
+</head>
+<body>
+
+  <!-- 全局顶部 Tab 栏 -->
+  <header class="global-topbar x-glass-topbar">
+    <div class="global-topbar-logo">
+      <svg class="topbar-logo-mark" width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0"   stop-color="#3B82F6"/>
+            <stop offset="0.5" stop-color="#8B5CF6"/>
+            <stop offset="1"   stop-color="#EC4899"/>
+          </linearGradient>
+          <linearGradient id="logoBolt" x1="10" y1="6" x2="22" y2="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#FFFFFF"/>
+            <stop offset="1" stop-color="#FEF3C7"/>
+          </linearGradient>
+        </defs>
+        <path d="M16 1.5 L28.5 8.5 L28.5 23.5 L16 30.5 L3.5 23.5 L3.5 8.5 Z" fill="url(#logoGrad)"/>
+        <path d="M16 5.2 L25.3 10.4 L25.3 21.6 L16 26.8 L6.7 21.6 L6.7 10.4 Z" stroke="rgba(255,255,255,0.25)" stroke-width="0.8" fill="none"/>
+        <path d="M18.2 8 L11.5 17.2 L15.5 17.2 L13.8 24 L20.5 14.8 L16.5 14.8 L18.2 8 Z" fill="url(#logoBolt)"/>
+        <circle cx="16" cy="3.2"  r="1.1" fill="#FFFFFF"/>
+        <circle cx="28.5" cy="16" r="1.1" fill="#FFFFFF" opacity="0.7"/>
+        <circle cx="3.5"  cy="16" r="1.1" fill="#FFFFFF" opacity="0.7"/>
+      </svg>
+      <span class="topbar-logo-text">
+        <span class="topbar-logo-name">智服工坊 X</span>
+        <span class="topbar-logo-sub">CCO Skill Studio · GUI Next</span>
+      </span>
+    </div>
+
+    <div class="global-tab-group">
+      <button class="global-tab active" data-mode="work">Work</button>
+      <button class="global-tab" data-mode="market">Market</button>
+    </div>
+
+    <div class="global-topbar-right">
+      <!-- ⌘K 触发器 -->
+      <button class="x-cmdk-trigger" id="cmdkTrigger" title="全局搜索 (⌘K)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>搜索 Skill / 知识 / 空间</span>
+        <kbd>⌘ K</kbd>
+      </button>
+      <div class="topbar-avatar">L</div>
+    </div>
+  </header>
+
+  <!-- 移动端遮罩 -->
+  <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+  <!-- 共享侧边栏 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header" id="sidebarHeader"></div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      <button class="sidebar-collapse-btn" id="sidebarToggle">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L6 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="collapse-label">收起侧边栏</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="modeWork">
+    <div id="sec-home"         class="page active"></div>
+    <div id="sec-skill"        class="page"></div>
+    <div id="sec-persona"      class="page"></div>
+    <div id="sec-analytics"    class="page"></div>
+    <div id="sec-ops"          class="page"></div>
+    <div id="sec-mcp"          class="page"></div>
+    <div id="sec-knowledge"    class="page"></div>
+    <div id="sec-skill-detail" class="page"></div>
+  </main>
+
+  <main class="main-content" id="modeMarket" style="display:none">
+    <div id="sec-market" class="page active">
+      <div id="mkt-square"    class="mkt-view active"></div>
+      <div id="mkt-knowledge" class="mkt-view"></div>
+      <div id="mkt-publish"   class="mkt-view"></div>
+      <div id="mkt-mine"      class="mkt-view"></div>
+    </div>
+  </main>
+
+  <!-- 全局 Modal -->
+  <div class="modal-overlay" id="appModal">
+    <div class="modal" id="appModalInner"></div>
+  </div>
+
+  <!-- 全局 ⌘K 命令面板挂载点 -->
+  <div id="cmdkRoot"></div>
+
+  <!-- 问问 AI 浮球存放点 -->
+  <div id="aiHelperRoot"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="js/app.js?v=x1"></script>
+</body>
+</html>
