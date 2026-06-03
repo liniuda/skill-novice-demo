@@ -270,6 +270,35 @@ html[data-theme="dark"] .wiz-sim-msg-ai {
   color: #6EE7B7 !important;
 }
 
+/* Wizard 选中卡片 / fallback / 模拟区 */
+html[data-theme="dark"] .wiz-fallback-item {
+  border-color: rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .wiz-fallback-item.selected {
+  border-color: rgba(139,92,246,.5) !important;
+  background: rgba(139,92,246,.08) !important;
+}
+html[data-theme="dark"] .wiz-radio-card {
+  border-color: rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .wiz-radio-card.selected {
+  border-color: rgba(139,92,246,.5) !important;
+  background: rgba(139,92,246,.08) !important;
+}
+html[data-theme="dark"] .wiz-radio-title {
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .wiz-radio-desc {
+  color: #A3A8B5 !important;
+}
+html[data-theme="dark"] .wiz-sim {
+  background: rgba(16,185,129,.08) !important;
+  border-left-color: rgba(16,185,129,.6) !important;
+}
+html[data-theme="dark"] .wiz-sim-title {
+  color: #6EE7B7 !important;
+}
+
 /* === 顶部“小白模式 / 专家模式”切换器 === */
 html[data-theme="dark"] .mode-toggle {
   background: rgba(255,255,255,.05) !important;
