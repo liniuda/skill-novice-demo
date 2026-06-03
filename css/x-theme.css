@@ -1213,6 +1213,35 @@ html[data-theme="dark"] li,
 html[data-theme="dark"] td,
 html[data-theme="dark"] label { color: inherit; }
 
+/* MCP 服务勾选卡片 */
+html[data-theme="dark"] .server-check-item {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(255,255,255,.02) !important;
+}
+html[data-theme="dark"] .server-check-item:hover {
+  background: rgba(255,255,255,.05) !important;
+}
+html[data-theme="dark"] .server-check-item.selected {
+  border-color: rgba(139,92,246,.5) !important;
+  background: rgba(139,92,246,.08) !important;
+}
+html[data-theme="dark"] .tool-check-label {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: #A3A8B5 !important;
+}
+html[data-theme="dark"] .tool-check-label:hover {
+  background: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .form-input {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .form-input::placeholder {
+  color: #6B7280 !important;
+}
+
 /* 代码块提亮 */
 html[data-theme="dark"] .code-block {
   background: rgba(0,0,0,.35) !important;
