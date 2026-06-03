@@ -1246,6 +1246,24 @@ html[data-theme="dark"] [style*="background:#E6F4FF"],
 html[data-theme="dark"] [style*="background: #E6F4FF"] {
   background: rgba(59,130,246,.18) !important;
 }
+html[data-theme="dark"] [style*="background:#F6FFED"],
+html[data-theme="dark"] [style*="background: #F6FFED"] {
+  background: rgba(16,185,129,.18) !important;
+}
+html[data-theme="dark"] [style*="background:#FFF7E6"],
+html[data-theme="dark"] [style*="background: #FFF7E6"] {
+  background: rgba(245,158,11,.18) !important;
+}
+html[data-theme="dark"] [style*="background:#FFF2F0"],
+html[data-theme="dark"] [style*="background: #FFF2F0"],
+html[data-theme="dark"] [style*="background:#FFF1F0"],
+html[data-theme="dark"] [style*="background: #FFF1F0"] {
+  background: rgba(239,68,68,.18) !important;
+}
+html[data-theme="dark"] [style*="background:#F9F0FF"],
+html[data-theme="dark"] [style*="background: #F9F0FF"] {
+  background: rgba(139,92,246,.18) !important;
+}
 
 /* Banner 暗色覆盖 */
 html[data-theme="dark"] .eng-banner {
