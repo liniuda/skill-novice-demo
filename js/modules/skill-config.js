@@ -95,19 +95,21 @@ export function renderSkillConfig() {
             onclick="window.sscSwitchTab('ops')">发布管理</button>
         </p>
       </div>
-      <button class="btn btn-ghost" data-engine="ai-draft" style="margin-right:8px">
-        ✨ AI 起草
-      </button>
-      <button class="btn btn-primary" id="scRegisterBtn">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <line x1="7" y1="1" x2="7" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-          <line x1="1" y1="7" x2="13" y2="7" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        注册 Skill
-      </button>
-      <div class="mode-toggle" style="margin-left:12px">
-        <button class="mode-toggle-btn" data-mode="novice">🌱 小白模式</button>
-        <button class="mode-toggle-btn active" data-mode="expert">⚡ 专家模式</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn btn-ghost" data-engine="ai-draft">
+          ✨ AI 起草
+        </button>
+        <button class="btn btn-primary" id="scRegisterBtn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <line x1="7" y1="1" x2="7" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="1" y1="7" x2="13" y2="7" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          注册 Skill
+        </button>
+        <div class="mode-toggle" style="margin-left:4px">
+          <button class="mode-toggle-btn" data-mode="novice">🌱 小白模式</button>
+          <button class="mode-toggle-btn active" data-mode="expert">⚡ 专家模式</button>
+        </div>
       </div>
     </div>
 
