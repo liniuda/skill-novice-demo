@@ -1194,10 +1194,22 @@ html[data-theme="dark"] h2,
 html[data-theme="dark"] h3,
 html[data-theme="dark"] h4 { color: #fff !important; }
 html[data-theme="dark"] p,
-html[data-theme="dark"] span:not(.bento-pill):not(.x-stream-cursor):not(.cmdk-row-kind):not(.bento-tile-arrow):not([class*="badge"]):not([class*="eng-tag"]):not([class*="eng-pill"]):not([class*="status"]),
+html[data-theme="dark"] span:not(.bento-pill):not(.x-stream-cursor):not(.cmdk-row-kind):not(.bento-tile-arrow):not([class*="badge"]):not([class*="eng-tag"]):not([class*="eng-pill"]):not([class*="status"]):not([class*="kb-"]):not([class*="kbm-"]):not([class*="mcp-"]):not([class*="ops-"]):not([data-tone]),
 html[data-theme="dark"] li,
 html[data-theme="dark"] td,
 html[data-theme="dark"] label { color: inherit; }
+
+/* 代码块提亮 */
+html[data-theme="dark"] .code-block {
+  background: rgba(0,0,0,.35) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: #CBD5E1 !important;
+}
+
+/* 知识库分类标签（有 data-tone 渐变底）*/
+html[data-theme="dark"] .kb-entry-cat {
+  color: #fff !important;
+}
 
 /* Banner 暗色覆盖 */
 html[data-theme="dark"] .eng-banner {
