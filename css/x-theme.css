@@ -1211,6 +1211,42 @@ html[data-theme="dark"] .kb-entry-cat {
   color: #fff !important;
 }
 
+/* 知识库全局兜底策略卡 */
+html[data-theme="dark"] .kb-strategy-card {
+  background: linear-gradient(135deg, rgba(22,26,35,.85) 0%, rgba(245,158,11,.08) 100%) !important;
+  border-color: rgba(245,158,11,.25) !important;
+}
+html[data-theme="dark"] .kb-section-head h3,
+html[data-theme="dark"] .kb-flow-text strong {
+  color: #fff !important;
+}
+html[data-theme="dark"] .kb-section-sub,
+html[data-theme="dark"] .kb-flow-text span {
+  color: #A3A8B5 !important;
+}
+html[data-theme="dark"] .kb-flow-step {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .kb-flow-num {
+  background: rgba(139,92,246,.25) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .kb-flow-arrow {
+  color: #A3A8B5 !important;
+}
+
+/* Market 卡片徽章（inline style 浅蓝底） */
+html[data-theme="dark"] .mkt-card-badge {
+  background: rgba(59,130,246,.18) !important;
+  color: #93C5FD !important;
+  border: 1px solid rgba(59,130,246,.35) !important;
+}
+html[data-theme="dark"] [style*="background:#E6F4FF"],
+html[data-theme="dark"] [style*="background: #E6F4FF"] {
+  background: rgba(59,130,246,.18) !important;
+}
+
 /* Banner 暗色覆盖 */
 html[data-theme="dark"] .eng-banner {
   background: linear-gradient(135deg, rgba(99,102,241,.12) 0%, rgba(139,92,246,.10) 100%) !important;
