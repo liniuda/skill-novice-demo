@@ -1211,6 +1211,19 @@ html[data-theme="dark"] .kb-entry-cat {
   color: #fff !important;
 }
 
+/* 警告提示条 */
+html[data-theme="dark"] .an-alert {
+  background: rgba(245,158,11,.1) !important;
+  border-left-color: rgba(245,158,11,.7) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .an-alert strong {
+  color: #FCD34D !important;
+}
+html[data-theme="dark"] .an-alert a {
+  color: var(--accent) !important;
+}
+
 /* 知识库全局兜底策略卡 */
 html[data-theme="dark"] .kb-strategy-card {
   background: linear-gradient(135deg, rgba(22,26,35,.85) 0%, rgba(245,158,11,.08) 100%) !important;
