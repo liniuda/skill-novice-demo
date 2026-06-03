@@ -898,3 +898,515 @@ html[data-theme="dark"] .kb-rag-result {
     inset 0 1px 0 rgba(255,255,255,.08) !important;
 }
 
+/* ================================================================
+ * 14. 强力暗色兑底层：修复 main.css 里写死的深字色 / 浅底色
+ * 覆盖所有 home / skill / wizard / persona / mcp / knowledge / market 中看不清的文字
+ * ================================================================ */
+
+/* 14.1 全局 mute 灰字提亮 */
+html[data-theme="dark"] [style*="color: #6B7280"],
+html[data-theme="dark"] [style*="color:#6B7280"],
+html[data-theme="dark"] [style*="color: #94A3B8"],
+html[data-theme="dark"] [style*="color:#94A3B8"],
+html[data-theme="dark"] [style*="color: #64748B"],
+html[data-theme="dark"] [style*="color:#64748B"],
+html[data-theme="dark"] [style*="color: #475569"],
+html[data-theme="dark"] [style*="color:#475569"] {
+  color: var(--text-soft, #A3A8B5) !important;
+}
+
+/* 14.2 main.css 特定选择器重写 */
+html[data-theme="dark"] .home-status-live {
+  background: rgba(16,185,129,.15) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16,185,129,.3);
+}
+html[data-theme="dark"] .home-status-draft {
+  background: rgba(148,163,184,.15) !important;
+  color: #CBD5E1 !important;
+  border: 1px solid rgba(148,163,184,.25);
+}
+
+/* eng-* 场景引擎标签 */
+html[data-theme="dark"] .eng-tag-1,
+html[data-theme="dark"] .eng-pill-blue {
+  background: rgba(99,102,241,.18) !important;
+  color: #A5B4FC !important;
+}
+html[data-theme="dark"] .eng-tag-3,
+html[data-theme="dark"] .eng-pill-green {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .eng-pill {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text, #E8EAF0) !important;
+  border: 1px solid rgba(255,255,255,.08);
+}
+html[data-theme="dark"] .eng-chip {
+  color: var(--text-soft, #A3A8B5) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  background: rgba(255,255,255,.03) !important;
+}
+html[data-theme="dark"] .eng-chip:hover {
+  background: rgba(99,102,241,.18) !important;
+  border-color: rgba(99,102,241,.45) !important;
+  color: #A5B4FC !important;
+}
+html[data-theme="dark"] .eng-summary-pass {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .eng-issue-info {
+  background: rgba(59,130,246,.12) !important;
+  border-left-color: #60A5FA !important;
+}
+html[data-theme="dark"] .eng-issue-info .eng-issue-level {
+  color: #93C5FD !important;
+}
+html[data-theme="dark"] .eng-up { color: #34D399 !important; }
+
+/* wizard 模拟气泡 */
+html[data-theme="dark"] .wiz-sim-msg-ai {
+  background: rgba(16,185,129,.15) !important;
+  color: #6EE7B7 !important;
+  border: 1px solid rgba(16,185,129,.25);
+}
+html[data-theme="dark"] .wiz-sim-msg-me {
+  background: rgba(99,102,241,.18) !important;
+  color: #C7D2FE !important;
+  border: 1px solid rgba(99,102,241,.3);
+}
+html[data-theme="dark"] .wiz-textarea,
+html[data-theme="dark"] .wiz-input {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .wiz-textarea::placeholder,
+html[data-theme="dark"] .wiz-input::placeholder {
+  color: var(--text-mute, #6B7280) !important;
+}
+html[data-theme="dark"] .wiz-desc,
+html[data-theme="dark"] .wiz-ai-sub,
+html[data-theme="dark"] .wiz-example-num {
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] .wiz-ai-hint {
+  background: rgba(139,92,246,.12) !important;
+  border: 1px solid rgba(139,92,246,.3) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .wiz-ai-hint strong { color: #fff !important; }
+html[data-theme="dark"] .wiz-rule-list li { color: var(--text-soft, #A3A8B5) !important; }
+html[data-theme="dark"] .wiz-rule-list li strong { color: #fff !important; }
+
+/* knowledge 类目/条目/RAG 打分 */
+html[data-theme="dark"] .kb-rag-summary.pass {
+  background: rgba(16,185,129,.15) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .kb-rag-score[data-level="high"] {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .kb-rag-score[data-level="low"] {
+  background: rgba(148,163,184,.18) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .kb-rag-score[data-level="mid"] {
+  background: rgba(245,158,11,.18) !important;
+  color: #FCD34D !important;
+}
+html[data-theme="dark"] .kb-entry-status.pub {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .kb-entry-status.draft {
+  background: rgba(148,163,184,.18) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .kb-search,
+html[data-theme="dark"] .kb-rag-input {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .kb-search:focus,
+html[data-theme="dark"] .kb-rag-input:focus {
+  border-color: rgba(139,92,246,.6) !important;
+}
+html[data-theme="dark"] .kb-chip {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] .kb-chip:hover,
+html[data-theme="dark"] .kb-chip.active {
+  background: rgba(139,92,246,.18) !important;
+  border-color: rgba(139,92,246,.45) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .kb-stat-trend.up { color: #34D399 !important; }
+html[data-theme="dark"] .kb-stat-trend.down { color: #F87171 !important; }
+
+/* market badge */
+html[data-theme="dark"] .kbm-badge-official {
+  background: rgba(22,119,255,.18) !important;
+  color: #93C5FD !important;
+}
+html[data-theme="dark"] .kbm-badge-new {
+  background: rgba(82,196,26,.18) !important;
+  color: #86EFAC !important;
+}
+
+/* home tip chips */
+html[data-theme="dark"] .home-tip-chip {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] .home-tip-chip:hover {
+  background: rgba(139,92,246,.18) !important;
+  border-color: rgba(139,92,246,.4) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .home-tip-title { color: #fff !important; }
+
+/* Skill 列表页 - search input */
+html[data-theme="dark"] .skill-search,
+html[data-theme="dark"] .skill-filter,
+html[data-theme="dark"] .filter-input,
+html[data-theme="dark"] .skill-list-search input,
+html[data-theme="dark"] .market-search input {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+
+/* table / list rows */
+html[data-theme="dark"] table,
+html[data-theme="dark"] tr,
+html[data-theme="dark"] td,
+html[data-theme="dark"] th {
+  color: var(--text, #E8EAF0) !important;
+  border-color: rgba(255,255,255,.06) !important;
+}
+html[data-theme="dark"] thead th {
+  background: rgba(255,255,255,.03) !important;
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] tbody tr:hover {
+  background: rgba(255,255,255,.03) !important;
+}
+
+/* 14.3 背景为白/超浅背景 · 全局重设 */
+html[data-theme="dark"] [style*="background:#fff"],
+html[data-theme="dark"] [style*="background: #fff"],
+html[data-theme="dark"] [style*="background-color:#fff"],
+html[data-theme="dark"] [style*="background-color: #fff"],
+html[data-theme="dark"] [style*="background:#FFF"],
+html[data-theme="dark"] [style*="background: white"],
+html[data-theme="dark"] [style*="background:#F9FAFB"],
+html[data-theme="dark"] [style*="background:#F3F4F6"],
+html[data-theme="dark"] [style*="background:#F1F5F9"] {
+  background: rgba(22,26,35,.7) !important;
+  color: var(--text, #E8EAF0) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+/* 14.4 六大状态色在暗背景提亮 */
+html[data-theme="dark"] [style*="color:#15803D"],
+html[data-theme="dark"] [style*="color: #15803D"],
+html[data-theme="dark"] [style*="color:#047857"],
+html[data-theme="dark"] [style*="color: #047857"],
+html[data-theme="dark"] [style*="color:#064E3B"] { color: #6EE7B7 !important; }
+html[data-theme="dark"] [style*="color:#1D4ED8"],
+html[data-theme="dark"] [style*="color: #1D4ED8"],
+html[data-theme="dark"] [style*="color:#4F46E5"],
+html[data-theme="dark"] [style*="color: #4F46E5"] { color: #93C5FD !important; }
+html[data-theme="dark"] [style*="color:#1677FF"] { color: #93C5FD !important; }
+html[data-theme="dark"] [style*="color:#52C41A"] { color: #86EFAC !important; }
+html[data-theme="dark"] [style*="color:#DC2626"],
+html[data-theme="dark"] [style*="color: #DC2626"],
+html[data-theme="dark"] [style*="color:#B91C1C"] { color: #F87171 !important; }
+html[data-theme="dark"] [style*="color:#D97706"],
+html[data-theme="dark"] [style*="color:#B45309"],
+html[data-theme="dark"] [style*="color:#F59E0B"] { color: #FCD34D !important; }
+
+/* 14.5 button hollow / btn-secondary */
+html[data-theme="dark"] .btn-secondary,
+html[data-theme="dark"] .btn-outline {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .btn-secondary:hover,
+html[data-theme="dark"] .btn-outline:hover {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+/* 14.6 wizard step header / step nav */
+html[data-theme="dark"] .wiz-step-num {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text-soft, #A3A8B5) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .wiz-step.active .wiz-step-num {
+  background: linear-gradient(135deg,#8B5CF6,#EC4899) !important;
+  color: #fff !important;
+  border: none !important;
+}
+html[data-theme="dark"] .wiz-step-label { color: var(--text-soft, #A3A8B5) !important; }
+html[data-theme="dark"] .wiz-step.active .wiz-step-label { color: #fff !important; }
+html[data-theme="dark"] .wiz-step.done .wiz-step-num {
+  background: rgba(16,185,129,.2) !important;
+  color: #6EE7B7 !important;
+  border-color: rgba(16,185,129,.4) !important;
+}
+
+/* 14.7 skill list / detail 各种 label */
+html[data-theme="dark"] .skill-list,
+html[data-theme="dark"] .skill-row,
+html[data-theme="dark"] .skill-row-meta,
+html[data-theme="dark"] .skill-detail-section,
+html[data-theme="dark"] .skill-detail-label,
+html[data-theme="dark"] .skill-detail-value,
+html[data-theme="dark"] .meta,
+html[data-theme="dark"] .label,
+html[data-theme="dark"] .desc,
+html[data-theme="dark"] .sub,
+html[data-theme="dark"] small {
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] .skill-row strong,
+html[data-theme="dark"] .skill-row-name,
+html[data-theme="dark"] .skill-detail-value strong {
+  color: var(--text, #E8EAF0) !important;
+}
+
+/* 14.8 ops / publish 状态 */
+html[data-theme="dark"] .ops-status-published,
+html[data-theme="dark"] .status-published {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .ops-status-draft,
+html[data-theme="dark"] .status-draft {
+  background: rgba(148,163,184,.18) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .ops-status-review,
+html[data-theme="dark"] .status-review {
+  background: rgba(245,158,11,.18) !important;
+  color: #FCD34D !important;
+}
+
+/* 14.9 顶栏 Tab 亮度提高 */
+html[data-theme="dark"] .global-tab {
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .global-tab.active {
+  color: #fff !important;
+  background: linear-gradient(135deg, rgba(139,92,246,.25), rgba(236,72,153,.18)) !important;
+  box-shadow: inset 0 0 0 1px rgba(139,92,246,.4);
+}
+
+/* 14.10 侧栏 label 可读化 */
+html[data-theme="dark"] .nav-label { color: inherit !important; }
+html[data-theme="dark"] .nav-icon { color: var(--text-soft, #A3A8B5); }
+html[data-theme="dark"] .nav-item.active .nav-icon { color: #fff; }
+
+/* 14.11 黑话气泡 / glossary popover */
+html[data-theme="dark"] .glossary-popover,
+html[data-theme="dark"] .toast,
+html[data-theme="dark"] .ai-tip,
+html[data-theme="dark"] .ai-hint {
+  background: rgba(22,26,35,.95) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  color: var(--text, #E8EAF0) !important;
+  backdrop-filter: blur(14px);
+}
+
+/* ============================================================
+   14.12 大型白底容器整体暗化（最关键的兜底）
+   ============================================================ */
+
+/* Engineering 抽屉 (.eng-drawer 是 wizard / engineering 主面板) */
+html[data-theme="dark"] .eng-drawer {
+  background: linear-gradient(180deg, rgba(22,26,35,.96), rgba(15,18,25,.96)) !important;
+  color: var(--text, #E8EAF0) !important;
+  box-shadow: -16px 0 48px rgba(0,0,0,.5), inset 1px 0 0 rgba(255,255,255,.06) !important;
+  border-left: 1px solid rgba(255,255,255,.08);
+}
+html[data-theme="dark"] .eng-drawer-head,
+html[data-theme="dark"] .eng-drawer-foot {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(255,255,255,.02) !important;
+}
+html[data-theme="dark"] .eng-drawer-title,
+html[data-theme="dark"] .eng-result-title {
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .eng-result,
+html[data-theme="dark"] .eng-steps {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .eng-textarea {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .eng-textarea:focus {
+  border-color: #8B5CF6 !important;
+}
+html[data-theme="dark"] .eng-chip {
+  background: rgba(255,255,255,.05) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .eng-chip:hover {
+  background: rgba(139,92,246,.15) !important;
+  border-color: rgba(139,92,246,.4) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .eng-step-dot {
+  background: rgba(255,255,255,.1) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .eng-step-line {
+  background: rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .eng-summary-pass { background: rgba(16,185,129,.18) !important; color: #6EE7B7 !important; }
+html[data-theme="dark"] .eng-summary-warn { background: rgba(245,158,11,.18) !important; color: #FCD34D !important; }
+html[data-theme="dark"] .eng-summary-fail { background: rgba(239,68,68,.18) !important; color: #FCA5A5 !important; }
+html[data-theme="dark"] .eng-empty,
+html[data-theme="dark"] .eng-hint,
+html[data-theme="dark"] .eng-kv-k,
+html[data-theme="dark"] .eng-result-sub,
+html[data-theme="dark"] .eng-step {
+  color: var(--text-soft, #A3A8B5) !important;
+}
+html[data-theme="dark"] .eng-mask {
+  background: rgba(0,0,0,.6) !important;
+}
+
+/* Home 卡片 / Recent / Tip-chip 类 (main.css 行 3250 / 3270 / 3291) */
+html[data-theme="dark"] .home-card,
+html[data-theme="dark"] .home-recent,
+html[data-theme="dark"] .home-tip-chip,
+html[data-theme="dark"] .home-quick-action {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .home-card:hover {
+  background: rgba(255,255,255,.07) !important;
+  border-color: rgba(139,92,246,.4) !important;
+}
+html[data-theme="dark"] .home-recent-row {
+  border-color: rgba(255,255,255,.06) !important;
+  color: var(--text, #E8EAF0) !important;
+}
+html[data-theme="dark"] .home-recent-row:hover {
+  background: rgba(255,255,255,.04) !important;
+}
+
+/* AI Helper 浮窗内的消息气泡（main.css 行 3321 / 3361） */
+html[data-theme="dark"] .ai-helper-panel,
+html[data-theme="dark"] .ai-helper-bubble,
+html[data-theme="dark"] .ai-helper-msg-ai {
+  background: rgba(22,26,35,.92) !important;
+  color: var(--text, #E8EAF0) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .ai-helper-msg-me {
+  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5)) !important;
+  color: #fff !important;
+}
+
+/* Skill Detail / Wizard / Persona 大卡片 (main.css 行 3427) */
+html[data-theme="dark"] .wizard-panel,
+html[data-theme="dark"] .skill-detail-card,
+html[data-theme="dark"] .persona-card,
+html[data-theme="dark"] .anal-card,
+html[data-theme="dark"] .ops-card,
+html[data-theme="dark"] .mcp-card,
+html[data-theme="dark"] .kb-card,
+html[data-theme="dark"] .market-card {
+  background: rgba(22,26,35,.7) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: var(--text, #E8EAF0) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3) !important;
+}
+
+/* 通用 modal-content / popup / panel 兜底 */
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .modal-body,
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer,
+html[data-theme="dark"] .popup,
+html[data-theme="dark"] .popup-content,
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .panel-body,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .card-body {
+  background: rgba(22,26,35,.92) !important;
+  color: var(--text, #E8EAF0) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+/* Skill 卡片外层（main.css 各种 .skill-* 容器） */
+html[data-theme="dark"] [class*="-card"],
+html[data-theme="dark"] [class*="-panel"],
+html[data-theme="dark"] [class*="-row"],
+html[data-theme="dark"] [class*="-list"] {
+  color: inherit;
+}
+
+/* 强制把 main.css 写死的 var(--text-primary)/--text-secondary/--text-tertiary 提亮 */
+html[data-theme="dark"] {
+  --text-primary: #E8EAF0 !important;
+  --text-secondary: #A3A8B5 !important;
+  --text-tertiary: #6B7280 !important;
+  --border: rgba(255,255,255,.08) !important;
+  --bg-page: #0B0D12 !important;
+  --bg-elevated: rgba(22,26,35,.92) !important;
+}
+
+/* 表格 / 列表行 兜底 */
+html[data-theme="dark"] table,
+html[data-theme="dark"] thead,
+html[data-theme="dark"] tbody,
+html[data-theme="dark"] tr,
+html[data-theme="dark"] td,
+html[data-theme="dark"] th {
+  background: transparent !important;
+  color: var(--text, #E8EAF0) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] tr:hover {
+  background: rgba(255,255,255,.03) !important;
+}
+
+/* 各种链接 */
+html[data-theme="dark"] a {
+  color: #A5B4FC;
+}
+html[data-theme="dark"] a:hover {
+  color: #C4B5FD;
+}
+
+/* 占位文字 */
+html[data-theme="dark"] ::placeholder {
+  color: rgba(232,234,240,.4) !important;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: rgba(232,234,240,.4) !important;
+}
+
+
