@@ -422,6 +422,20 @@ html[data-theme="dark"] .btn-ghost {
   color: var(--text);
 }
 html[data-theme="dark"] .btn-ghost:hover { background: rgba(255,255,255,.08); }
+
+/* AI 起草按钮——紫色渐变风格突出 AI 功能 */
+html[data-theme="dark"] .btn[data-engine="ai-draft"],
+html[data-theme="dark"] .btn-ghost[data-engine="ai-draft"] {
+  background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(236,72,153,.10)) !important;
+  border: 1px solid rgba(139,92,246,.4) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .btn[data-engine="ai-draft"]:hover,
+html[data-theme="dark"] .btn-ghost[data-engine="ai-draft"]:hover {
+  background: linear-gradient(135deg, rgba(139,92,246,.25), rgba(236,72,153,.18)) !important;
+  border-color: rgba(139,92,246,.6) !important;
+  color: #E9D5FF !important;
+}
 html[data-theme="dark"] .btn-primary {
   background: linear-gradient(135deg,#8B5CF6,#EC4899);
   color:#fff;
