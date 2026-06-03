@@ -36,9 +36,17 @@ html[data-theme="dark"] {
   --accent-text:    #FFFFFF;
   --bg-page:        transparent;
   --success:        #10B981;
+  --success-bg:     rgba(16,185,129,.15);
+  --success-text:   #6EE7B7;
   --danger:         #EF4444;
+  --danger-bg:      rgba(239,68,68,.15);
+  --danger-text:    #FCA5A5;
   --warning:        #F59E0B;
+  --warning-bg:     rgba(245,158,11,.15);
+  --warning-text:   #FCD34D;
   --info:           #3B82F6;
+  --info-bg:        rgba(59,130,246,.15);
+  --info-text:      #93C5FD;
 }
 
 /* ============================================================
@@ -1186,10 +1194,51 @@ html[data-theme="dark"] h2,
 html[data-theme="dark"] h3,
 html[data-theme="dark"] h4 { color: #fff !important; }
 html[data-theme="dark"] p,
-html[data-theme="dark"] span:not(.bento-pill):not(.x-stream-cursor):not(.cmdk-row-kind):not(.bento-tile-arrow),
+html[data-theme="dark"] span:not(.bento-pill):not(.x-stream-cursor):not(.cmdk-row-kind):not(.bento-tile-arrow):not([class*="badge"]):not([class*="eng-tag"]):not([class*="eng-pill"]):not([class*="status"]),
 html[data-theme="dark"] li,
 html[data-theme="dark"] td,
 html[data-theme="dark"] label { color: inherit; }
+
+/* Banner 暗色覆盖 */
+html[data-theme="dark"] .eng-banner {
+  background: linear-gradient(135deg, rgba(99,102,241,.12) 0%, rgba(139,92,246,.10) 100%) !important;
+  border-color: rgba(139,92,246,.3) !important;
+}
+html[data-theme="dark"] .eng-banner-rec {
+  background: linear-gradient(135deg, rgba(16,185,129,.12) 0%, rgba(20,184,166,.10) 100%) !important;
+  border-color: rgba(16,185,129,.3) !important;
+}
+html[data-theme="dark"] .eng-banner-title,
+html[data-theme="dark"] .eng-banner-sub {
+  color: #E8EAF0 !important;
+}
+
+/* Badge 状态徽章暗色 */
+html[data-theme="dark"] .badge-success {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+html[data-theme="dark"] .badge-success .badge-dot {
+  background: #10B981 !important;
+}
+html[data-theme="dark"] .badge-warning {
+  background: rgba(245,158,11,.18) !important;
+  color: #FCD34D !important;
+}
+html[data-theme="dark"] .badge-warning .badge-dot {
+  background: #F59E0B !important;
+}
+html[data-theme="dark"] .badge-danger {
+  background: rgba(239,68,68,.18) !important;
+  color: #FCA5A5 !important;
+}
+html[data-theme="dark"] .badge-danger .badge-dot {
+  background: #EF4444 !important;
+}
+html[data-theme="dark"] .badge-neutral {
+  background: rgba(255,255,255,.06) !important;
+  color: #CBD5E1 !important;
+}
 
 /* RAG 测试器玻璃化 */
 html[data-theme="dark"] .kb-rag-tester,
