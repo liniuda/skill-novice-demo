@@ -21,6 +21,134 @@ html[data-theme="dark"] {
   --accent-cyan:  #06B6D4;
   --accent-amber: #F59E0B;
   --accent-green: #10B981;
+
+  /* === 重点：覆盖 main.css 原生 CSS 变量（看不清的根源）=== */
+  --text-secondary: #A3A8B5;
+  --text-tertiary:  #7B8294;
+  --text-primary:   #E8EAF0;
+  --surface:        rgba(22,26,35,.92);
+  --surface-2:      rgba(28,32,42,.92);
+  --neutral-bg:     rgba(255,255,255,.06);
+  --neutral-text:   #E8EAF0;
+  --border-light:   rgba(255,255,255,.06);
+  --accent:         #8B5CF6;
+  --accent-hover:   #A78BFA;
+  --accent-text:    #FFFFFF;
+  --bg-page:        transparent;
+  --success:        #10B981;
+  --danger:         #EF4444;
+  --warning:        #F59E0B;
+  --info:           #3B82F6;
+}
+
+/* ============================================================
+   1.5 金牌兜底层（!important 最高优先级）
+   ============================================================ */
+html[data-theme="dark"] body { color: #E8EAF0; }
+
+/* 顶栏 Tab 组 */
+html[data-theme="dark"] .global-tab-group {
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.08);
+}
+html[data-theme="dark"] .global-tab {
+  color: #CBD5E1 !important;
+  background: transparent !important;
+}
+html[data-theme="dark"] .global-tab:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.06) !important;
+}
+html[data-theme="dark"] .global-tab.active {
+  background: linear-gradient(135deg, #8B5CF6, #EC4899) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(139,92,246,.4);
+}
+
+/* 空间切换器 - 所有子元素一律提亮 */
+html[data-theme="dark"] .space-switcher-trigger,
+html[data-theme="dark"] .space-switcher-trigger * {
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .space-name { color: #FFFFFF !important; }
+html[data-theme="dark"] .space-sub  { color: #A3A8B5 !important; }
+html[data-theme="dark"] .space-chevron { color: #A3A8B5 !important; }
+html[data-theme="dark"] .space-option,
+html[data-theme="dark"] .space-option * {
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .space-option-desc { color: #A3A8B5 !important; }
+html[data-theme="dark"] .space-dropdown-header { color: #A3A8B5 !important; }
+
+/* AI 浮窗 一体暗化 */
+html[data-theme="dark"] .ai-helper-panel {
+  background: rgba(22,26,35,.96) !important;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+}
+html[data-theme="dark"] .ai-helper-body {
+  background: transparent !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .ai-helper-bubble-msg,
+html[data-theme="dark"] .ai-msg-ai .ai-msg-content,
+html[data-theme="dark"] .ai-msg-ai .ai-msg-text {
+  background: rgba(255,255,255,.06) !important;
+  color: #E8EAF0 !important;
+  border: 1px solid rgba(255,255,255,.08);
+}
+html[data-theme="dark"] .ai-helper-bubble-msg strong,
+html[data-theme="dark"] .ai-helper-bubble-msg p,
+html[data-theme="dark"] .ai-helper-greet strong {
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .ai-helper-avatar,
+html[data-theme="dark"] .ai-msg-ai .ai-msg-avatar {
+  background: linear-gradient(135deg, rgba(139,92,246,.4), rgba(236,72,153,.3)) !important;
+  color: #fff !important;
+}
+html[data-theme="dark"] .ai-helper-chip {
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .ai-helper-chip:hover {
+  background: rgba(139,92,246,.2) !important;
+  color: #fff !important;
+  border-color: rgba(139,92,246,.5) !important;
+}
+html[data-theme="dark"] .ai-helper-close {
+  color: rgba(255,255,255,.7) !important;
+  background: rgba(255,255,255,.15) !important;
+}
+html[data-theme="dark"] .ai-helper-close:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.25) !important;
+}
+html[data-theme="dark"] .ai-msg-me .ai-msg-text {
+  background: linear-gradient(135deg, #8B5CF6, #EC4899) !important;
+  color: #fff !important;
+}
+html[data-theme="dark"] .ai-helper-input,
+html[data-theme="dark"] .ai-helper-input-wrap,
+html[data-theme="dark"] .ai-helper-foot textarea,
+html[data-theme="dark"] .ai-helper-foot input {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .ai-helper-foot {
+  background: rgba(0,0,0,.25) !important;
+  border-top: 1px solid rgba(255,255,255,.06) !important;
+}
+
+/* 列表项/表格默认字色提亮 */
+html[data-theme="dark"] td,
+html[data-theme="dark"] th,
+html[data-theme="dark"] li,
+html[data-theme="dark"] dt,
+html[data-theme="dark"] dd {
+  color: #E8EAF0 !important;
 }
 
 html[data-theme="dark"] body {
