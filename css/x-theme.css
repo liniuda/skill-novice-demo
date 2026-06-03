@@ -151,6 +151,183 @@ html[data-theme="dark"] dd {
   color: #E8EAF0 !important;
 }
 
+/* ============================================================
+   1.6 写死浅底容器一锅端（针对 main.css 里 bg:#fff/#F9FAFB 等）
+   这是看不清的真正根源
+   ============================================================ */
+
+/* === 效果分析 (analytics) === */
+html[data-theme="dark"] .an-kpi-card,
+html[data-theme="dark"] .an-section {
+  background: rgba(22,26,35,.7) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+html[data-theme="dark"] .an-kpi-card:hover {
+  background: rgba(28,32,42,.85) !important;
+  border-color: rgba(139,92,246,.4) !important;
+  box-shadow: 0 8px 24px rgba(139,92,246,.2) !important;
+}
+html[data-theme="dark"] .an-bar-wrap,
+html[data-theme="dark"] .an-cov-wrap {
+  background: rgba(255,255,255,.05) !important;
+}
+html[data-theme="dark"] .an-kpi-label,
+html[data-theme="dark"] .an-section-sub,
+html[data-theme="dark"] .an-legend-item,
+html[data-theme="dark"] .an-bar-label,
+html[data-theme="dark"] .an-cov-label {
+  color: #A3A8B5 !important;
+}
+html[data-theme="dark"] .an-kpi-value,
+html[data-theme="dark"] .an-section-title {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .an-kpi-delta.eng-up { color: #6EE7B7 !important; }
+html[data-theme="dark"] .an-kpi-delta.eng-down { color: #FCA5A5 !important; }
+
+/* === 首页卡片 === */
+html[data-theme="dark"] .home-task-card,
+html[data-theme="dark"] .home-recent,
+html[data-theme="dark"] .home-tip-chip,
+html[data-theme="dark"] .home-quick-tips {
+  background: rgba(22,26,35,.7) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #E8EAF0 !important;
+}
+
+/* === Wizard / Engineering 抽屉与卡片 === */
+html[data-theme="dark"] .eng-drawer {
+  background: linear-gradient(180deg, rgba(22,26,35,.96), rgba(15,18,25,.96)) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .eng-drawer-foot {
+  background: rgba(0,0,0,.25) !important;
+  border-top-color: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .eng-drawer-head {
+  border-bottom-color: rgba(255,255,255,.08) !important;
+}
+html[data-theme="dark"] .eng-result,
+html[data-theme="dark"] .eng-steps,
+html[data-theme="dark"] .eng-stat {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .eng-chip,
+html[data-theme="dark"] .eng-pill {
+  background: rgba(255,255,255,.06) !important;
+  color: #CBD5E1 !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .eng-tag-1,
+html[data-theme="dark"] .eng-pill-blue { background: rgba(99,102,241,.2) !important; color: #A5B4FC !important; }
+html[data-theme="dark"] .eng-tag-2 { background: rgba(245,158,11,.2) !important; color: #FCD34D !important; }
+html[data-theme="dark"] .eng-tag-3,
+html[data-theme="dark"] .eng-pill-green,
+html[data-theme="dark"] .eng-summary-pass { background: rgba(16,185,129,.2) !important; color: #6EE7B7 !important; }
+html[data-theme="dark"] .eng-tag-4 { background: rgba(236,72,153,.2) !important; color: #F9A8D4 !important; }
+html[data-theme="dark"] .eng-pill-orange { background: rgba(249,115,22,.2) !important; color: #FDBA74 !important; }
+html[data-theme="dark"] .eng-pill-red,
+html[data-theme="dark"] .eng-summary-fail { background: rgba(239,68,68,.2) !important; color: #FCA5A5 !important; }
+html[data-theme="dark"] .eng-summary-warn { background: rgba(245,158,11,.2) !important; color: #FCD34D !important; }
+
+/* === Skill 配置 Wizard 卡片 === */
+html[data-theme="dark"] .wiz-card,
+html[data-theme="dark"] .wiz-pay-limit,
+html[data-theme="dark"] .wiz-preview-card {
+  background: rgba(22,26,35,.7) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .wiz-preset-chip,
+html[data-theme="dark"] .wiz-example-num {
+  background: rgba(255,255,255,.06) !important;
+  color: #CBD5E1 !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .wiz-preset-chip.selected,
+html[data-theme="dark"] .wiz-preset-chip:hover {
+  background: rgba(139,92,246,.2) !important;
+  border-color: rgba(139,92,246,.5) !important;
+  color: #C4B5FD !important;
+}
+html[data-theme="dark"] .wiz-sim-msg-user {
+  background: rgba(255,255,255,.08) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .wiz-sim-msg-ai {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+
+/* === 顶部“小白模式 / 专家模式”切换器 === */
+html[data-theme="dark"] .mode-toggle {
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+}
+html[data-theme="dark"] .mode-toggle-btn {
+  background: transparent !important;
+  color: #CBD5E1 !important;
+}
+html[data-theme="dark"] .mode-toggle-btn.active {
+  background: linear-gradient(135deg, #8B5CF6, #EC4899) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(139,92,246,.4);
+}
+
+/* === Persona 切换点 === */
+html[data-theme="dark"] .persona-switch-dot {
+  background: #fff !important;
+}
+html[data-theme="dark"] .persona-segmented {
+  background: rgba(255,255,255,.05) !important;
+}
+
+/* === 发布管理 (ops) 主要用 .skill-card / .ops-* 现有变量已被覆盖，
+      但补上运营状态标签 === */
+html[data-theme="dark"] .ops-status-published { background: rgba(16,185,129,.2) !important; color: #6EE7B7 !important; }
+html[data-theme="dark"] .ops-status-draft     { background: rgba(148,163,184,.2) !important; color: #CBD5E1 !important; }
+html[data-theme="dark"] .ops-status-review    { background: rgba(245,158,11,.2) !important; color: #FCD34D !important; }
+html[data-theme="dark"] .ops-status-offline   { background: rgba(239,68,68,.2) !important; color: #FCA5A5 !important; }
+
+/* === MCP 服务标签 === */
+html[data-theme="dark"] .mcp-tag,
+html[data-theme="dark"] .mcp-chip,
+html[data-theme="dark"] .skill-mcp-chip {
+  background: rgba(139,92,246,.18) !important;
+  color: #C4B5FD !important;
+  border: 1px solid rgba(139,92,246,.35) !important;
+}
+html[data-theme="dark"] .mcp-status-online,
+html[data-theme="dark"] .mcp-status-active { background: rgba(16,185,129,.2) !important; color: #6EE7B7 !important; }
+html[data-theme="dark"] .mcp-status-offline { background: rgba(239,68,68,.2) !important; color: #FCA5A5 !important; }
+
+/* === 知识库标签 === */
+html[data-theme="dark"] .kb-tag,
+html[data-theme="dark"] .kbm-tag,
+html[data-theme="dark"] .kbm-badge {
+  background: rgba(99,102,241,.2) !important;
+  color: #A5B4FC !important;
+  border: 1px solid rgba(99,102,241,.35) !important;
+}
+html[data-theme="dark"] .kbm-badge-official { background: rgba(245,158,11,.2) !important; color: #FCD34D !important; border-color: rgba(245,158,11,.35) !important; }
+html[data-theme="dark"] .kbm-badge-new      { background: rgba(236,72,153,.2) !important; color: #F9A8D4 !important; border-color: rgba(236,72,153,.35) !important; }
+html[data-theme="dark"] .kbm-badge-hot      { background: rgba(239,68,68,.2)  !important; color: #FCA5A5 !important; border-color: rgba(239,68,68,.35)  !important; }
+
+/* === 成长 / 任务条 === */
+html[data-theme="dark"] .growth-modal-bar,
+html[data-theme="dark"] .growth-quest-item {
+  background: rgba(255,255,255,.05) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #E8EAF0 !important;
+}
+html[data-theme="dark"] .growth-quest-item.done {
+  background: rgba(16,185,129,.18) !important;
+  color: #6EE7B7 !important;
+}
+
 html[data-theme="dark"] body {
   background:
     radial-gradient(800px 500px at 12% 0%,  rgba(59,130,246,.13), transparent 60%),
