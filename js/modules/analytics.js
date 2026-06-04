@@ -144,7 +144,7 @@ function renderTrendChart(trend) {
   `).join('');
 
   return `
-    <svg class="an-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <svg class="an-chart" viewBox="0 0 ${W} ${H}">
       ${yAxis}
       <path d="${linePath('resolveRate')}" class="an-line an-line-pri" fill="none"/>
       <path d="${linePath('callRate')}"   class="an-line an-line-warn" fill="none"/>

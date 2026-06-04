@@ -1271,12 +1271,21 @@ html[data-theme="dark"] .form-input::placeholder {
   color: #6B7280 !important;
 }
 
-/* SVG 图表坐标轴文字 */
+/* SVG 图表坐标轴文字 + 自适应 */
 html[data-theme="dark"] .an-axis {
   fill: #9CA3AF !important;
 }
 html[data-theme="dark"] svg text {
   fill: #9CA3AF !important;
+}
+html[data-theme="dark"] .an-grid {
+  stroke: rgba(255,255,255,.08) !important;
+}
+.an-chart {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 1;
+  max-height: 220px;
 }
 
 /* 代码块提亮 */
