@@ -24,7 +24,7 @@ html[data-theme="dark"] {
 
   /* === 重点：覆盖 main.css 原生 CSS 变量（看不清的根源）=== */
   --text-secondary: #A3A8B5;
-  --text-tertiary:  #7B8294;
+  --text-tertiary:  #9CA3AF;
   --text-primary:   #E8EAF0;
   --surface:        rgba(22,26,35,.92);
   --surface-2:      rgba(28,32,42,.92);
@@ -1271,6 +1271,14 @@ html[data-theme="dark"] .form-input::placeholder {
   color: #6B7280 !important;
 }
 
+/* SVG 图表坐标轴文字 */
+html[data-theme="dark"] .an-axis {
+  fill: #9CA3AF !important;
+}
+html[data-theme="dark"] svg text {
+  fill: #9CA3AF !important;
+}
+
 /* 代码块提亮 */
 html[data-theme="dark"] .code-block {
   background: rgba(0,0,0,.35) !important;
@@ -1876,7 +1884,7 @@ html[data-theme="dark"] [class*="-list"] {
 html[data-theme="dark"] {
   --text-primary: #E8EAF0 !important;
   --text-secondary: #A3A8B5 !important;
-  --text-tertiary: #6B7280 !important;
+  --text-tertiary: #9CA3AF !important;
   --border: rgba(255,255,255,.08) !important;
   --bg-page: #0B0D12 !important;
   --bg-elevated: rgba(22,26,35,.92) !important;
