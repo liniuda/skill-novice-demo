@@ -10,6 +10,7 @@ import { renderKnowledge }   from './modules/knowledge.js';
 import { renderOps }         from './modules/ops.js';
 import { renderSkillDetail } from './modules/skill-detail.js';
 import { renderMarketSub }   from './modules/market.js';
+import { renderTicket, renderTicketSkill } from './modules/ticket.js';
 import './modules/engines.js';   // 四大引擎挂载层（自注册全局事件）
 import './modules/ai-helper.js'; // 问问 AI 浮球（自启动）
 import './modules/glossary.js';  // 黑话翻译 hover 气泡（自启动）
@@ -68,6 +69,17 @@ const MARKET_NAV = `
   <button class="nav-item" data-mode="market" data-tab="mine">
     <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="4" y="1" width="8" height="4" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>
     <span class="nav-label">我的发布</span>
+  </button>`;
+
+/* ── CCO 工单处理空间专属导航 ── */
+const TICKET_NAV = `
+  <button class="nav-item active" data-mode="work" data-tab="ticket">
+    <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.2"/><circle cx="5" cy="10" r="1" fill="currentColor"/><path d="M7.5 10h4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    <span class="nav-label">工单场景绑定</span>
+  </button>
+  <button class="nav-item" data-mode="work" data-tab="ticket-skill">
+    <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".7"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".7"/></svg></span>
+    <span class="nav-label">Skill 管理</span>
   </button>`;
 
 /* ── 产品维度的六大空间 ── */
@@ -156,6 +168,13 @@ function renderSpaceSwitcher() {
         const next = SPACES.find(s => s.id === target);
         showToast(`已切换到「${next.name}」· ${next.sub}`);
         renderSpaceSwitcher();
+        /* 切换空间后重新加载侧边栏导航并跳转默认页 */
+        updateSidebar('work');
+        if (target === 'cco-ticket') {
+          switchTab('ticket');
+        } else {
+          switchTab('home');
+        }
       }
     });
   });
@@ -181,7 +200,12 @@ function updateSidebar(mode) {
 
   if (mode === 'work') {
     renderSpaceSwitcher();
-    nav.innerHTML = WORK_NAV;
+    const space = getCurrentSpace();
+    if (space.id === 'cco-ticket') {
+      nav.innerHTML = TICKET_NAV;
+    } else {
+      nav.innerHTML = WORK_NAV;
+    }
   } else {
     renderMarketHeader();
     nav.innerHTML = MARKET_NAV;
@@ -246,6 +270,8 @@ function switchTab(tab) {
   if (tab === 'ops')       renderOps();
   if (tab === 'mcp')       renderMcp();
   if (tab === 'knowledge') renderKnowledge();
+  if (tab === 'ticket')    renderTicket();
+  if (tab === 'ticket-skill')    renderTicketSkill();
 }
 
 /* ── Market 内 Tab 切换 ── */
