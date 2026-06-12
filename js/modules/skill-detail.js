@@ -14,13 +14,25 @@ import { showModal, closeModal } from '../modal.js';
 let _skillId  = null;
 let _activeTab = 'basic';
 
-const TABS = [
-  { id: 'basic',  label: '基础信息' },
-  { id: 'body',   label: '指令内容' },
-  { id: 'evals',  label: '评估用例' },
-  { id: 'mcp',    label: 'MCP 绑定' },
-  { id: 'ops',    label: '运维信息' },
+/* ── 空间自定义右侧面板注册表 ── */
+window.__spaceSidePanelBuilders = window.__spaceSidePanelBuilders || {};
+window.__spaceSidePanelEvents   = window.__spaceSidePanelEvents   || {};
+
+const BASE_TABS = [
+  { id: 'basic',  label: '基础信息',  icon: '📋' },
+  { id: 'body',   label: '指令内容',  icon: '✏️' },
+  { id: 'evals',  label: '评估用例',  icon: '🧪' },
+  { id: 'im-test', label: 'IM 测试',  icon: '💬' },
+  { id: 'mcp',    label: 'MCP 绑定',  icon: '🔗' },
+  { id: 'ops',    label: '运维信息',  icon: '⚙️' },
 ];
+
+function getTabs() {
+  const space = sessionStorage.getItem('novice_current_space') || '';
+  // 工单空间不显示 IM 测试 Tab（工单空间有自己的右侧测试面板）
+  if (space === 'cco-ticket') return BASE_TABS.filter(t => t.id !== 'im-test');
+  return BASE_TABS;
+}
 
 const PRIORITY_OPTIONS = [
   { value: 'critical', label: '紧急' },
@@ -51,9 +63,10 @@ export function renderSkillDetail(skillId, activeTab) {
 
 /* ── 整体骨架 ── */
 function buildPage(skill) {
-  const tabBar = TABS.map(t => `
+  const tabs = getTabs();
+  const tabBar = tabs.map(t => `
     <button class="detail-tab${_activeTab === t.id ? ' active' : ''}" data-tab="${t.id}">
-      ${t.label}
+      <span class="detail-tab-icon">${t.icon}</span>${t.label}
     </button>`).join('');
 
   return `
@@ -98,12 +111,22 @@ function buildPage(skill) {
 
 /* ── Tab 内容分发 ── */
 function buildTabContent(skill, tab) {
-  if (tab === 'basic')  return buildBasicTab(skill);
-  if (tab === 'body')   return buildBodyTab(skill);
-  if (tab === 'evals')  return buildEvalsTab(skill);
-  if (tab === 'mcp')    return buildMcpTab(skill);
-  if (tab === 'ops')    return buildOpsTab(skill);
+  if (tab === 'basic')   return buildBasicTab(skill);
+  if (tab === 'body')    return buildBodyTab(skill);
+  if (tab === 'evals')   return buildEvalsTab(skill);
+  if (tab === 'im-test') return buildImTestTab(skill);
+  if (tab === 'mcp')     return buildMcpTab(skill);
+  if (tab === 'ops')     return buildOpsTab(skill);
   return '';
+}
+
+/* ── 获取当前空间感知的右侧面板 ── */
+function getSidePanel(skill, tab) {
+  const space = sessionStorage.getItem('novice_current_space') || '';
+  const builder = window.__spaceSidePanelBuilders[space];
+  // 仅在指令内容 Tab 允许空间自定义面板
+  if (tab === 'body' && builder) return builder(skill);
+  return buildSidePanel(skill);
 }
 
 /* ── 右侧通用信息面板 ── */
@@ -303,7 +326,7 @@ function buildBasicTab(skill) {
           <button type="submit" class="btn btn-primary">保存基础信息</button>
         </div>
       </form>
-      ${buildSidePanel(skill)}
+      ${getSidePanel(skill, 'basic')}
     </div>
   `;
 }
@@ -341,7 +364,7 @@ function buildBodyTab(skill) {
           <button type="submit" class="btn btn-primary">保存指令内容</button>
         </div>
       </form>
-      ${buildSidePanel(skill)}
+      ${getSidePanel(skill, 'body')}
     </div>
   `;
 }
@@ -392,6 +415,101 @@ function buildEvalsTab(skill) {
         <div class="detail-form-actions" style="gap:var(--s-2)">
           <button class="btn btn-ghost" id="addEvalBtn">+ 添加用例</button>
           <button class="btn btn-primary" id="saveEvalsBtn">保存评估用例</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ─────────────────────────────────────────────
+   Tab 3.5: IM 测试
+───────────────────────────────────────────── */
+
+/* IM 测试的对话历史（内存态，不持久化） */
+const _imTestSessions = {};
+
+function getImMessages(skillId) {
+  if (!_imTestSessions[skillId]) _imTestSessions[skillId] = [];
+  return _imTestSessions[skillId];
+}
+
+/* 模拟 Skill 响应 */
+const MOCK_SKILL_RESPONSES = [
+  '根据您提供的信息，我已为您查询到相关数据。物流单号 SF1234567890 当前状态为「运输中」，预计 6 月 20 日送达目的地。',
+  '已为您核实，该订单存在异常发货记录。建议按以下步骤处理：\n1. 联系卖家确认实际发货情况\n2. 如超期未发货，可发起退款申请\n3. 如有争议，可申请平台介入',
+  '经系统检测，该账户近 30 天操作记录正常，未发现异常登录行为。建议开启两步验证以增强安全性。',
+  '根据当前商品信息，该产品涉及的知识产权投诉已受理，预计 3-5 个工作日给出审核结果。期间请保留相关凭证。',
+  '数据分析结果如下：\n- 本月工单处理量: 1,247 件\n- 平均响应时间: 2.3 分钟\n- 一次性解决率: 87.6%\n- 客户满意度: 4.2/5.0\n\n建议关注响应时间的波动，上周三峰值达 5.1 分钟。',
+];
+
+function mockSkillResponse(skill, userMsg) {
+  const idx = Math.abs(userMsg.length * 7 + skill.name.length) % MOCK_SKILL_RESPONSES.length;
+  return MOCK_SKILL_RESPONSES[idx];
+}
+
+function buildImTestTab(skill) {
+  const messages = getImMessages(skill.id);
+  const hasHistory = messages.length > 0;
+
+  /* 快捷场景按钮 */
+  const quickActions = [
+    { icon: '🔍', label: '查询状态' },
+    { icon: '📋', label: '生成回复' },
+    { icon: '⚠️', label: '异常处理' },
+    { icon: '📊', label: '数据分析' },
+  ];
+
+  const quickBtns = quickActions.map(a =>
+    `<button class="im-quick-btn" data-prompt="${a.label}"><span class="im-quick-icon">${a.icon}</span>${a.label}</button>`
+  ).join('');
+
+  /* 对话消息渲染 */
+  const msgHtml = messages.map(m => {
+    if (m.role === 'user') {
+      return `<div class="im-msg im-msg-user">
+        <div class="im-msg-bubble im-msg-user-bubble">${escHtml(m.content)}</div>
+      </div>`;
+    } else {
+      const isTyping = m.content === '__typing__';
+      const bubbleAttr = isTyping ? 'data-typing' : '';
+      const bubbleContent = isTyping ? '<span></span>' : escHtml(m.content);
+      return `<div class="im-msg im-msg-assistant">
+        <div class="im-msg-avatar">${skill.icon || '🤖'}</div>
+        <div class="im-msg-bubble im-msg-assistant-bubble" ${bubbleAttr}>${bubbleContent}</div>
+      </div>`;
+    }
+  }).join('');
+
+  return `
+    <div class="detail-tab-body single-col">
+      <div class="im-test-container" id="imTestContainer" data-skillid="${skill.id}">
+        ${!hasHistory ? `
+        <div class="im-test-welcome">
+          <div class="im-test-welcome-icon">${skill.icon || '🤖'}</div>
+          <div class="im-test-welcome-title">测试 ${escHtml(skill.name)}</div>
+          <div class="im-test-welcome-desc">模拟 IM 对话场景，验证 Skill 的实际响应效果</div>
+          <div class="im-quick-actions">${quickBtns}</div>
+        </div>` : `
+        <div class="im-test-messages" id="imTestMessages">${msgHtml}</div>`}
+
+        <div class="im-test-input-area">
+          <div class="im-test-input-wrap">
+            <textarea class="im-test-input" id="imTestInput" placeholder="输入测试消息..." rows="1"></textarea>
+            <button class="im-test-send" id="imTestSend" title="发送">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="im-test-toolbar">
+            <button class="im-test-tool-btn" id="imTestClear" title="清空对话">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 3.5h10M5 3.5V2.5a1 1 0 011-1h2a1 1 0 011 1v1M4.5 3.5l.5 8a1 1 0 001 1h2a1 1 0 001-1l.5-8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              清空
+            </button>
+            <span class="im-test-hint">Enter 发送 / Shift+Enter 换行</span>
+          </div>
         </div>
       </div>
     </div>
@@ -527,7 +645,7 @@ function buildOpsTab(skill) {
         </div>
 
       </div>
-      ${buildSidePanel(skill)}
+      ${getSidePanel(skill, 'ops')}
     </div>
   `;
 }
@@ -538,7 +656,12 @@ function buildOpsTab(skill) {
 function bindDetailEvents(el, skill) {
   /* 返回 */
   el.querySelector('#detailBack')?.addEventListener('click', () => {
-    window.backToSkillList?.();
+    const space = sessionStorage.getItem('novice_current_space') || '';
+    if (space === 'cco-ticket') {
+      window.sscSwitchTab?.('ticket-skill');
+    } else {
+      window.backToSkillList?.();
+    }
   });
 
   /* Tab 切换 */
@@ -641,6 +764,64 @@ function bindDetailEvents(el, skill) {
     });
   }
 
+  /* ── IM 测试 ── */
+  const imContainer = el.querySelector('#imTestContainer');
+  if (imContainer) {
+    const input  = el.querySelector('#imTestInput');
+    const sendBtn = el.querySelector('#imTestSend');
+
+    function imSend() {
+      const text = (input?.value || '').trim();
+      if (!text) return;
+      const msgs = getImMessages(skill.id);
+      msgs.push({ role: 'user', content: text });
+      input.value = '';
+      // 模拟打字延迟后回复
+      const typingMsg = { role: 'assistant', content: '__typing__' };
+      msgs.push(typingMsg);
+      renderSkillDetail(_skillId, 'im-test');
+      setTimeout(() => {
+        const resp = mockSkillResponse(skill, text);
+        typingMsg.content = resp;
+        renderSkillDetail(_skillId, 'im-test');
+      }, 800 + Math.random() * 700);
+    }
+
+    sendBtn?.addEventListener('click', imSend);
+    input?.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        imSend();
+      }
+    });
+    // 自动调整高度
+    input?.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+
+    // 快捷按钮
+    el.querySelectorAll('.im-quick-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const prompt = btn.dataset.prompt;
+        if (input) input.value = prompt;
+        imSend();
+      });
+    });
+
+    // 清空对话
+    el.querySelector('#imTestClear')?.addEventListener('click', () => {
+      _imTestSessions[skill.id] = [];
+      renderSkillDetail(_skillId, 'im-test');
+    });
+
+    // 滚动到底部
+    requestAnimationFrame(() => {
+      const msgBox = el.querySelector('#imTestMessages');
+      if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+    });
+  }
+
   /* ── MCP 绑定 ── */
   const servers = getServers();
   servers.forEach(srv => {
@@ -690,6 +871,11 @@ function bindDetailEvents(el, skill) {
   el.querySelector('#addChangelogBtn')?.addEventListener('click', () => {
     openChangelogModal(skill.id);
   });
+
+  /* ── 空间自定义面板事件 ── */
+  const space = sessionStorage.getItem('novice_current_space') || '';
+  const bindFn = window.__spaceSidePanelEvents[space];
+  if (bindFn) bindFn(el, skill);
 }
 
 /* ── 添加 Changelog 条目 Modal ── */

@@ -3,6 +3,7 @@
  * 记录工单场景与 Skill 的绑定关系、预测验证状态
  */
 import { showModal, closeModal } from '../modal.js';
+import { getSkillById, addSkill, updateSkill } from '../data/skills.js';
 
 /* ── 工单聚类数据 ── */
 const TICKET_CLUSTERS = [
@@ -379,53 +380,42 @@ export function renderTicketSkill() {
   const container = document.getElementById('sec-ticket-skill');
   if (!container) return;
 
+  const publishedCount = TICKET_SKILLS.filter(s => s.status === 'published').length;
+  const offlineCount  = TICKET_SKILLS.filter(s => s.status !== 'published').length;
+
   container.innerHTML = `
     <div class="x-page-header">
       <h1 class="x-page-title">Skill 管理</h1>
       <p class="x-page-desc">上传、编译、管理工单处理类 Skill，点击「发布」进入验证与上线流程</p>
     </div>
 
-    <div class="ticket-section-card">
-      <div class="ticket-section-title">
-        <span>已上传 Skill</span>
-        <button class="ticket-bind-btn btn-bindnew" id="ticketUploadSkillBtn">+ 上传新 Skill</button>
+    <div class="stat-bar">
+      <div class="stat-card">
+        <div class="stat-value">${TICKET_SKILLS.length}</div>
+        <div class="stat-label">全部</div>
       </div>
-      <table class="ticket-history-table">
-        <thead>
-          <tr>
-            <th>Skill 名称</th>
-            <th>版本</th>
-            <th>编译状态</th>
-            <th>绑定场景</th>
-            <th>更新时间</th>
-            <th>发布状态</th>
-            <th style="text-align:center">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${TICKET_SKILLS.map(s => {
-            const compiledTag = s.compiled
-              ? '<span class="skill-status-tag tag-compiled-pass">✓ 通过</span>'
-              : `<span class="skill-status-tag tag-compiled-fail tag-clickable" data-skill-id="${s.id}" title="点击查看原因">✗ 未通过</span>`;
-            const statusTag = s.status === 'published'
-              ? '<span class="skill-status-tag tag-published">已发布</span>'
-              : '<span class="skill-status-tag tag-offline">已下线</span>';
-            const actionBtns = s.status === 'published'
-              ? `<button class="ticket-test-trigger" data-skill-id="${s.id}">✏️ 编辑</button><button class="ticket-offline-trigger" data-skill-id="${s.id}">⏸ 下线</button>`
-              : `<button class="ticket-test-trigger" data-skill-id="${s.id}">✏️ 编辑</button><button class="ticket-publish-trigger" data-skill-id="${s.id}">🚀 发布</button>`;
-            return `
-            <tr>
-              <td style="font-weight:600">${s.name}</td>
-              <td>${s.version}</td>
-              <td>${compiledTag}</td>
-              <td>${s.scene}</td>
-              <td class="ticket-h-time">${s.updatedAt}</td>
-              <td>${statusTag}</td>
-              <td style="text-align:center">${actionBtns}</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
+      <div class="stat-card">
+        <div class="stat-value">${publishedCount}</div>
+        <div class="stat-label">已发布</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${offlineCount}</div>
+        <div class="stat-label">已下线</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="ticketUploadSkillBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        上传新 Skill
+      </button>
+    </div>
+
+    <div class="skill-grid" id="ticketSkillGrid">
+      ${TICKET_SKILLS.map(s => renderTicketSkillCard(s)).join('')}
     </div>
 
     <!-- 右侧 Drawer 容器 -->
@@ -448,12 +438,14 @@ export function renderTicketSkill() {
     });
   });
 
-  // 绑定测试按钮
+  // 绑定编辑按钮 → 跳转 skill-detail 详情页
   container.querySelectorAll('.ticket-test-trigger').forEach(btn => {
     btn.addEventListener('click', () => {
       const skillId = btn.dataset.skillId;
-      const skill = TICKET_SKILLS.find(s => s.id === skillId);
-      if (skill) renderTestEnvironment(skill);
+      const ticketSkill = TICKET_SKILLS.find(s => s.id === skillId);
+      if (!ticketSkill) return;
+      ensureSkillInStore(ticketSkill);
+      window.openSkillDetail?.(ticketSkill.id, 'body');
     });
   });
 
@@ -465,7 +457,6 @@ export function renderTicketSkill() {
       if (!skill) return;
       if (confirm(`确认将「${skill.name} ${skill.version}」下线？\n下线后该 Skill 将停止自动化处理工单。`)) {
         skill.status = 'offline';
-        // 同步解绑场景
         const cluster = TICKET_CLUSTERS.find(c => c.boundSkill && c.boundSkill.name.includes(skill.name));
         if (cluster) {
           cluster.boundSkill = null;
@@ -482,7 +473,8 @@ export function renderTicketSkill() {
 
   // 编译未通过点击查看原因
   container.querySelectorAll('.tag-compiled-fail.tag-clickable').forEach(tag => {
-    tag.addEventListener('click', () => {
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation();
       const skillId = tag.dataset.skillId;
       const skill = TICKET_SKILLS.find(s => s.id === skillId);
       if (skill && skill.compileErrors) showCompileErrorModal(skill);
@@ -491,6 +483,48 @@ export function renderTicketSkill() {
 
   // 上传新 Skill 按钮
   container.querySelector('#ticketUploadSkillBtn')?.addEventListener('click', openUploadSkillModal);
+}
+
+/* ── 工单 Skill 卡片渲染 ── */
+const TICKET_SKILL_ICONS = ['📋','⚖️','🏪','💰','🔐','🛡️'];
+
+function renderTicketSkillCard(s) {
+  const icon = TICKET_SKILL_ICONS[TICKET_SKILLS.indexOf(s) % TICKET_SKILL_ICONS.length];
+  const compiledTag = s.compiled
+    ? '<span class="skill-status-tag tag-compiled-pass">✓ 通过</span>'
+    : '<span class="skill-status-tag tag-compiled-fail tag-clickable" data-skill-id="' + s.id + '" title="点击查看原因">✗ 未通过</span>';
+  const statusTag = s.status === 'published'
+    ? '<span class="skill-status-tag tag-published">已发布</span>'
+    : '<span class="skill-status-tag tag-offline">已下线</span>';
+  const actionBtns = s.status === 'published'
+    ? '<button class="ticket-test-trigger" data-skill-id="' + s.id + '">✏️ 编辑</button><button class="ticket-offline-trigger" data-skill-id="' + s.id + '">⏸ 下线</button>'
+    : '<button class="ticket-test-trigger" data-skill-id="' + s.id + '">✏️ 编辑</button><button class="ticket-publish-trigger" data-skill-id="' + s.id + '">🚀 发布</button>';
+
+  return `
+    <div class="skill-card" data-card-id="${s.id}" style="cursor:pointer">
+      <div class="skill-card-header">
+        <div class="skill-icon">${icon}</div>
+        <div class="skill-card-meta">
+          <div class="skill-name">${s.name}</div>
+          <div class="skill-id">${s.version} · 更新于 ${s.updatedAt}</div>
+        </div>
+        ${statusTag}
+      </div>
+
+      <div class="skill-card-desc">
+        <span style="margin-right:8px">${compiledTag}</span>
+        <span style="color:var(--text-tertiary);font-size:var(--font-size-xs)">绑定场景：${s.scene !== '—' ? s.scene : '未绑定'}</span>
+      </div>
+
+      <div class="skill-card-footer">
+        <div class="skill-mcp-chips">
+          ${s.predictSamples && s.predictSamples.length > 0
+            ? '<span class="chip">验证 ' + s.verifiedCorrect + '/' + s.predictSamples.length + '</span>'
+            : '<span style="font-size:var(--font-size-xs);color:var(--text-tertiary)">待验证</span>'}
+        </div>
+        <div class="skill-card-actions">${actionBtns}</div>
+      </div>
+    </div>`;
 }
 
 /* ══════════════════════════════════════════════════
@@ -529,51 +563,8 @@ function showCompileErrorModal(skill) {
 }
 
 /* ══════════════════════════════════════════════════
-   Skill 编辑环境
+   工单空间测试面板（注册到 skill-detail 的指令内容 Tab 右侧）
    ══════════════════════════════════════════════════ */
-
-/* ── Mock 规则配置 ── */
-const SKILL_RULES = {
-  'ts-1': `WHEN user.request.type == "chargeback"
-  AND case.dispute_status IN ["rejected", "pending_appeal"]
-  AND order.payment_method == "credit_insurance"
-THEN
-  action: "guide_appeal"
-  notify: true
-  priority: "high"
-  sla: "48h"`,
-  'ts-2': `WHEN user.request.type == "shipment"
-  AND order.shipped_amount < 0.8
-THEN
-  action: "auto_correct"
-  notify: true
-  priority: "high"`,
-  'ts-3': `WHEN user.request.type == "marketing"
-  AND campaign.status IN ["paused", "error"]
-THEN
-  action: "diagnose_campaign"
-  notify: false
-  priority: "medium"`,
-  'ts-4': `WHEN user.request.type == "fund_check"
-  AND payment.status == "pending_verification"
-THEN
-  action: "verify_receipt"
-  notify: true
-  priority: "low"`,
-  'ts-5': `WHEN user.request.type == "account_access"
-  AND (account.status == "blacklisted" OR acp.result == "failed")
-THEN
-  action: "verify_identity"
-  notify: true
-  priority: "high"
-  sla: "24h"`,
-  'ts-6': `WHEN user.request.type == "ip_dispute"
-  AND item.infringement_score > 0.9
-THEN
-  action: "guide_appeal"
-  notify: false
-  priority: "medium"`,
-};
 
 /* ── Mock 测试结果生成 ── */
 function generateMockTestResult(skill, ticketId) {
@@ -589,204 +580,110 @@ function generateMockTestResult(skill, ticketId) {
   return `工单 ${ticketId} 测试完成：\n- 命中规则：${r.rule}\n- 匹配信度：${r.confidence}\n- 建议动作：${r.action}\n- 预计处理耗时：${r.time}`;
 }
 
-/* ── 渲染编辑环境页面 ── */
-function renderTestEnvironment(skill) {
-  const container = document.getElementById('sec-ticket-skill');
-  if (!container) return;
-
-  const ruleCode = SKILL_RULES[skill.id] || 'WHEN true\nTHEN\n  action: "fallback"';
-  const ruleLines = ruleCode.split('\n');
-
-  container.innerHTML = `
-    <div class="test-env">
-      <!-- 顶部导航 -->
-      <div class="test-env-topbar">
-        <button class="test-env-back" id="testEnvBack">← 返回 Skill 列表</button>
-        <span class="test-env-breadcrumb">Skill 管理 / <strong>${skill.name} ${skill.version}</strong> / 编辑环境</span>
-        <button class="test-env-save-btn" id="testEnvSaveBtn">💾 保存</button>
+/* ── 工单空间右侧测试面板渲染 ── */
+function buildTicketTestPanel(skill) {
+  const ticketSkill = TICKET_SKILLS.find(s => s.id === skill.id);
+  return `
+    <aside class="detail-side-panel">
+      <div class="side-card">
+        <div class="side-card-title">🧪 工单测试运行</div>
+        <div class="side-row">
+          <label class="side-label" style="display:block;margin-bottom:6px">工单号码</label>
+          <input class="form-input" id="ticketTestId" placeholder="输入工单号码..." style="width:100%">
+          <div style="font-size:var(--font-size-xs);color:var(--text-tertiary);margin-top:4px">输入工单号码后运行测试，验证 Skill 执行效果</div>
+        </div>
+        <button class="btn btn-primary" id="ticketTestRunBtn" style="width:100%;margin-top:12px">▶ 运行测试</button>
+        <div id="ticketTestResultArea" style="display:none;margin-top:12px">
+          <div style="font-size:var(--font-size-xs);color:var(--text-secondary);margin-bottom:4px;font-weight:600">📝 运行结论</div>
+          <pre id="ticketTestResultBody" style="background:var(--bg-tertiary);padding:10px;border-radius:6px;font-size:var(--font-size-xs);white-space:pre-wrap;margin:0"></pre>
+        </div>
+        <button class="btn btn-ghost" id="ticketTestExecBtn" style="display:none;width:100%;margin-top:8px">⚡ 执行自动化工单操作</button>
       </div>
 
-      <!-- 双栏布局 -->
-      <div class="test-env-layout">
-        <!-- 左侧：配置编辑 -->
-        <div class="test-env-left">
-          <div class="test-env-field">
-            <label class="test-env-label">SKILL 名称</label>
-            <div class="test-env-input-wrap">
-              <input class="test-env-input test-env-editable" id="testSkillName" value="${skill.name}">
-              <span class="test-env-edit-icon">✏️</span>
-            </div>
-          </div>
-          <div class="test-env-field">
-            <label class="test-env-label">SKILL 备注</label>
-            <div class="test-env-input-wrap">
-              <input class="test-env-input test-env-editable" id="testSkillDesc" value="${skill.scene !== '—' ? skill.scene + ' 场景自动化处理' : '待配置'}">
-              <span class="test-env-edit-icon">✏️</span>
-            </div>
-          </div>
-          <div class="test-env-field">
-            <label class="test-env-label">规则配置</label>
-            <div class="test-env-code test-env-code-tall">
-              <textarea class="test-env-code-editor" id="testRuleEditor" spellcheck="false">${ruleCode}</textarea>
-            </div>
-          </div>
+      <div class="side-card">
+        <div class="side-card-title">ℹ️ 基本信息</div>
+        <div class="side-row"><span class="side-label">SKILL ID</span><code style="font-size:var(--font-size-xs)">${escHtml(skill.id)}</code></div>
+        <div class="side-row"><span class="side-label">状态</span><span style="font-size:var(--font-size-sm)">${ticketSkill ? (ticketSkill.status === 'published' ? '已上线' : ticketSkill.status === 'compiled' ? '调优中' : '已下线') : (skill.status === 'published' ? '已发布' : '草稿')}</span></div>
+        <div class="side-row"><span class="side-label">版本</span><span class="mono" style="font-size:var(--font-size-sm)">${escHtml(skill.version || '1.0.0')}</span></div>
+        ${ticketSkill && ticketSkill.scene ? `<div class="side-row"><span class="side-label">绑定场景</span><span style="font-size:var(--font-size-sm)">${escHtml(ticketSkill.scene)}</span></div>` : ''}
+      </div>
 
-        </div>
-
-        <!-- 右侧：信息与测试 -->
-        <div class="test-env-right">
-          <!-- 基本信息卡片 -->
-          <div class="test-env-card">
-            <h3 class="test-env-card-title">ℹ️ 基本信息</h3>
-            <div class="test-env-info-row"><span>SKILL ID</span><code>${skill.id}</code></div>
-            <div class="test-env-info-row"><span>状态</span><span class="test-env-status ${skill.status === 'compiled' ? 'status-tuning' : skill.status === 'published' ? 'status-online' : 'status-off'}"> ${skill.status === 'compiled' ? '调优中' : skill.status === 'published' ? '已上线' : '已下线'}</span></div>
-            <div class="test-env-info-row"><span>创建时间</span><span>2026-05-20 09:15</span></div>
-            <div class="test-env-info-row"><span>更新时间</span><span>${skill.updatedAt} 14:20</span></div>
-          </div>
-
-          <!-- 测试运行 -->
-          <div class="test-env-card">
-            <h3 class="test-env-card-title">🧪 测试运行</h3>
-            <label class="test-env-label">工单号码</label>
-            <input class="test-env-input test-env-ticket-input" id="testTicketId" placeholder="输入工单号码...">
-            <p class="test-env-hint">输入工单号码后方可运行测试，验证 SKILL 执行效果</p>
-            <button class="test-env-run-btn" id="testRunBtn">▶ 运行测试</button>
-
-            <!-- 运行结果区 -->
-            <div class="test-env-result" id="testResultArea" style="display:none">
-              <h4 class="test-env-result-title">📝 运行结论</h4>
-              <pre class="test-env-result-body" id="testResultBody"></pre>
-            </div>
-
-            <!-- 执行按钮 -->
-            <button class="test-env-execute-btn" id="testExecuteBtn" style="display:none">⚡ 执行自动化工单操作</button>
-          </div>
-
-          <!-- 操作记录 -->
-          <div class="test-env-card">
-            <h3 class="test-env-card-title">🕙 操作记录</h3>
-            <div class="test-env-timeline" id="testTimeline">
-              <div class="test-env-timeline-item">
-                <span class="timeline-dot"></span>
-                <div class="timeline-content">
-                  <span class="timeline-action">修改规则配置</span>
-                  <span class="timeline-time">2分钟前</span>
-                </div>
-              </div>
-              <div class="test-env-timeline-item">
-                <span class="timeline-dot"></span>
-                <div class="timeline-content">
-                  <span class="timeline-action">运行测试通过</span>
-                  <span class="timeline-time">30分钟前</span>
-                </div>
-              </div>
-              <div class="test-env-timeline-item">
-                <span class="timeline-dot"></span>
-                <div class="timeline-content">
-                  <span class="timeline-action">创建 SKILL</span>
-                  <span class="timeline-time">2026-05-20</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="side-card">
+        <div class="side-card-title">🕙 操作记录</div>
+        <div class="ticket-side-timeline" id="ticketSideTimeline">
+          <div class="ticket-side-tl-item"><span class="ticket-side-tl-dot"></span><span>创建 Skill</span><span class="ticket-side-tl-time">${skill.createdAt ? new Date(skill.createdAt).toLocaleDateString('zh-CN') : '—'}</span></div>
         </div>
       </div>
-    </div>
-  `;
+    </aside>`;
+}
 
-  // 返回按钮
-  container.querySelector('#testEnvBack')?.addEventListener('click', () => {
-    renderTicketSkill();
-  });
+function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // 保存按钮
-  container.querySelector('#testEnvSaveBtn')?.addEventListener('click', () => {
-    const newName = document.getElementById('testSkillName')?.value?.trim();
-    const newDesc = document.getElementById('testSkillDesc')?.value?.trim();
-    const newRule = document.getElementById('testRuleEditor')?.value;
-    if (newName) skill.name = newName;
-    if (newRule) SKILL_RULES[skill.id] = newRule;
-    skill.updatedAt = new Date().toISOString().slice(0, 10);
-
-    // 更新操作记录时间线
-    const timeline = document.getElementById('testTimeline');
-    if (timeline) {
-      const newItem = document.createElement('div');
-      newItem.className = 'test-env-timeline-item new';
-      newItem.innerHTML = `
-        <span class="timeline-dot active"></span>
-        <div class="timeline-content">
-          <span class="timeline-action">保存编辑 - ${newName || skill.name}</span>
-          <span class="timeline-time">刚刚</span>
-        </div>
-      `;
-      timeline.insertBefore(newItem, timeline.firstChild);
-    }
-
-    const btn = container.querySelector('#testEnvSaveBtn');
-    btn.textContent = '✅ 已保存';
-    setTimeout(() => { btn.textContent = '💾 保存'; }, 1500);
-  });
-
-
-
-  // 运行测试按钮
-  container.querySelector('#testRunBtn')?.addEventListener('click', () => {
-    const ticketId = document.getElementById('testTicketId')?.value?.trim();
+/* ── 工单空间右侧面板事件绑定 ── */
+function bindTicketTestPanelEvents(el, skill) {
+  // 运行测试
+  el.querySelector('#ticketTestRunBtn')?.addEventListener('click', () => {
+    const ticketId = document.getElementById('ticketTestId')?.value?.trim();
     if (!ticketId) { alert('请输入工单号码'); return; }
 
-    const btn = container.querySelector('#testRunBtn');
+    const btn = el.querySelector('#ticketTestRunBtn');
     btn.textContent = '⏳ 运行中...';
     btn.disabled = true;
 
-    // 模拟异步运行
     setTimeout(() => {
       const result = generateMockTestResult(skill, ticketId);
-      const resultArea = document.getElementById('testResultArea');
-      const resultBody = document.getElementById('testResultBody');
-      const execBtn = document.getElementById('testExecuteBtn');
-
-      resultBody.textContent = result;
-      resultArea.style.display = 'block';
-      execBtn.style.display = 'block';
-
+      document.getElementById('ticketTestResultArea').style.display = 'block';
+      document.getElementById('ticketTestResultBody').textContent = result;
+      document.getElementById('ticketTestExecBtn').style.display = 'block';
       btn.textContent = '▶ 运行测试';
       btn.disabled = false;
 
-      // 添加时间线记录
-      const timeline = document.getElementById('testTimeline');
-      const newItem = document.createElement('div');
-      newItem.className = 'test-env-timeline-item new';
-      newItem.innerHTML = `
-        <span class="timeline-dot active"></span>
-        <div class="timeline-content">
-          <span class="timeline-action">运行测试 - 工单 ${ticketId}</span>
-          <span class="timeline-time">刚刚</span>
-        </div>
-      `;
-      timeline.insertBefore(newItem, timeline.firstChild);
+      // 时间线记录
+      const timeline = document.getElementById('ticketSideTimeline');
+      if (timeline) {
+        const item = document.createElement('div');
+        item.className = 'ticket-side-tl-item';
+        item.innerHTML = `<span class="ticket-side-tl-dot active"></span><span>运行测试 - 工单 ${ticketId}</span><span class="ticket-side-tl-time">刚刚</span>`;
+        timeline.insertBefore(item, timeline.firstChild);
+      }
     }, 1200);
   });
 
-  // 执行自动化按钮
-  container.querySelector('#testExecuteBtn')?.addEventListener('click', function() {
-    this.textContent = '✅ 执行成功！工单已自动处理';
-    this.classList.add('executed');
+  // 执行自动化
+  el.querySelector('#ticketTestExecBtn')?.addEventListener('click', function() {
+    this.textContent = '✅ 执行成功！';
     this.disabled = true;
-
-    const timeline = document.getElementById('testTimeline');
-    const newItem = document.createElement('div');
-    newItem.className = 'test-env-timeline-item new';
-    newItem.innerHTML = `
-      <span class="timeline-dot active"></span>
-      <div class="timeline-content">
-        <span class="timeline-action">执行自动化操作</span>
-        <span class="timeline-time">刚刚</span>
-      </div>
-    `;
-    timeline.insertBefore(newItem, timeline.firstChild);
+    const timeline = document.getElementById('ticketSideTimeline');
+    if (timeline) {
+      const item = document.createElement('div');
+      item.className = 'ticket-side-tl-item';
+      item.innerHTML = `<span class="ticket-side-tl-dot active"></span><span>执行自动化操作</span><span class="ticket-side-tl-time">刚刚</span>`;
+      timeline.insertBefore(item, timeline.firstChild);
+    }
   });
 }
+
+/* ── 确保工单 Skill 在 skills.js 存储中存在 ── */
+function ensureSkillInStore(ticketSkill) {
+  let existing = getSkillById(ticketSkill.id);
+  if (!existing) {
+    addSkill({
+      name: ticketSkill.name,
+      skillName: ticketSkill.id,
+      version: ticketSkill.version,
+      category: 'ticket-processing',
+      priority: 'high',
+      description: ticketSkill.scene !== '—' ? ticketSkill.scene + ' 场景自动化处理' : '',
+      tags: ['工单', ticketSkill.scene !== '—' ? ticketSkill.scene : ''],
+    });
+  }
+}
+
+/* ── 注册到全局空间面板系统 ── */
+window.__spaceSidePanelBuilders = window.__spaceSidePanelBuilders || {};
+window.__spaceSidePanelEvents   = window.__spaceSidePanelEvents   || {};
+window.__spaceSidePanelBuilders['cco-ticket'] = buildTicketTestPanel;
+window.__spaceSidePanelEvents['cco-ticket']   = bindTicketTestPanelEvents;
 
 /* ── 打开发布 Drawer ── */
 function openPublishDrawer(skill) {

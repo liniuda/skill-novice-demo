@@ -11,6 +11,7 @@ import { renderOps }         from './modules/ops.js';
 import { renderSkillDetail } from './modules/skill-detail.js';
 import { renderMarketSub }   from './modules/market.js';
 import { renderTicket, renderTicketSkill } from './modules/ticket.js';
+import { renderImTest } from './modules/im-test.js';
 import './modules/engines.js';   // 四大引擎挂载层（自注册全局事件）
 import './modules/ai-helper.js'; // 问问 AI 浮球（自启动）
 import './modules/glossary.js';  // 黑话翻译 hover 气泡（自启动）
@@ -27,6 +28,10 @@ const WORK_NAV = `
   <button class="nav-item active" data-mode="work" data-tab="home">
     <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 7v6.5a.5.5 0 00.5.5h3v-4h2v4h3a.5.5 0 00.5-.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="nav-label">首页</span>
+  </button>
+  <button class="nav-item" data-mode="work" data-tab="im-test">
+    <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 2H3a1.5 1.5 0 00-1.5 1.5v7A1.5 1.5 0 003 12h2.5l2.5 2.5L10.5 12H13a1.5 1.5 0 001.5-1.5v-7A1.5 1.5 0 0013 2z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><circle cx="5.5" cy="7.5" r="1" fill="currentColor"/><circle cx="8" cy="7.5" r="1" fill="currentColor"/><circle cx="10.5" cy="7.5" r="1" fill="currentColor"/></svg></span>
+    <span class="nav-label">IM 测试</span>
   </button>
   <button class="nav-item" data-mode="work" data-tab="skill">
     <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".7"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".7"/></svg></span>
@@ -264,6 +269,7 @@ function switchTab(tab) {
   if (btn) btn.classList.add('active');
 
   if (tab === 'home')      renderHome();
+  if (tab === 'im-test')   renderImTest();
   if (tab === 'skill')     renderSkillConfig();
   if (tab === 'persona')   renderPersona();
   if (tab === 'analytics') renderAnalytics();
